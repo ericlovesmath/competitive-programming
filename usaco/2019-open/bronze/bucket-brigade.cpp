@@ -26,6 +26,8 @@ void setIO(string name = "") {
 
 // Problem Statement {{{
 
+// http://www.usaco.org/index.php?page=viewproblem2&cpid=939
+
 // 10x10 farm
 // B = Barn, L = Lake, R = Rock
 // Cows can only touch adjacently
