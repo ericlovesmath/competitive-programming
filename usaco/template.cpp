@@ -1,5 +1,6 @@
 // Headers {{{
 #include <algorithm>
+#include <array>
 #include <iostream>
 #include <iterator>
 #include <map>

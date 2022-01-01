@@ -16,7 +16,7 @@ using namespace std;
 typedef pair<int, int> pii;
 typedef long long ll;
 
-const int MAXN = 1e5+5;
+const int MAXN = 1e5 + 5;
 
 enum ECarTypes { Sedan, Hatchback, Wagon };
 
@@ -83,25 +83,36 @@ int main() {
 
     //// Vector (Dynamic Array)
     string val;
-    vector<string> my_vector; // initialize the vector
+    vector<string> my_vector;
     cin >> val;
-    my_vector.push_back(val); // will push the value of 'val' into vector
-    my_vector.push_back(val); // will push the value into the vector again (now
-                              // having two elements)
+    my_vector.push_back(val);
+    my_vector.push_back(val);
 
     // To iterate through a vector we have 2 choices:
-    // Either classic looping (iterating through the vector from index 0 to its
-    // last index):
     for (int i = 0; i < my_vector.size(); i++) {
-        cout << my_vector[i] << endl; // for accessing a vector's element we can
-                                      // use the operator []
+        cout << my_vector[i] << endl;
+    }
+    for (vector<int>::iterator it = v.begin(); it != v.end(); ++it) {
+        cout << *it << " ";
     }
 
-    // or using an iterator:
-    vector<string>::iterator it; // initialize the iterator for vector
-    for (it = my_vector.begin(); it != my_vector.end(); ++it) {
-        cout << *it << endl;
-    }
+    v.push_back(2); // [2]
+    v.push_back(3); // [2, 3]
+    v.push_back(7); // [2, 3, 7]
+    v.push_back(5); // [2, 3, 7, 5]
+    v[1] = 4; // sets element at index 1 to 4 -> [2, 4, 7, 5]
+    v.erase(v.begin() + 1); // removes element at index 1 -> [2, 7, 5]
+    // this remove method is O(n); to be avoided
+    v.push_back(8); // [2, 7, 5, 8]
+    v.erase(v.end() - 1); // [2, 7, 5]
+    // here, we remove the element from the end of the list; this is O(1).
+    v.push_back(4); // [2, 7, 5, 4]
+    v.push_back(4); // [2, 7, 5, 4, 4]
+    v.push_back(9); // [2, 7, 5, 4, 4, 9]
+    cout << v[2]; // 5
+    v.erase(v.begin(), v.begin() + 3); // [4, 4, 9]
+
+    // this erases the first three elements; O(n)
 
     //// Set (Ordered Set)
 
@@ -195,20 +206,24 @@ int main() {
     tie(first_int, first_char) = first;
     cout << first_int << " " << first_char << '\n'; // prints : 10 A
 
-    // We can also create tuple like this.
-
     tuple<int, char, double> third(11, 'A', 3.14141);
     // tuple_size returns number of elements in a tuple (as a constexpr)
 
     cout << tuple_size<decltype(third)>::value << '\n'; // prints: 3
 
     // tuple_cat concatenates the elements of all the tuples in the same order.
-
     auto concatenated_tuple = tuple_cat(first, second, third);
     // concatenated_tuple becomes = (10, 'A', 1e9, 15, 11, 'A', 3.14141)
-
     cout << get<0>(concatenated_tuple) << '\n'; // prints: 10
     cout << get<3>(concatenated_tuple) << '\n'; // prints: 15
     cout << get<5>(concatenated_tuple) << '\n'; // prints: 'A'
 
+    // Pair
+    
+    pair<string, int> myPair1 = make_pair("Testing", 123);
+	cout << myPair1.first << " " << myPair1.second << endl;
+	myPair1.first = "It is possible to edit pairs after declaring them";
+	cout << myPair1.first << " " << myPair1.second << endl;
+	pair<string, string> myPair2 = {"Testing", "curly braces"};
+	cout << myPair2.first << " " << myPair2.second << endl;
 }
