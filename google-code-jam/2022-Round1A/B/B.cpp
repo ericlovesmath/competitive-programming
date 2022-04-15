@@ -1,5 +1,7 @@
 // Headers {{{
 #include <algorithm>
+#include <cassert>
+#include <cstring>
 #include <iostream>
 #include <iterator>
 #include <map>
@@ -12,7 +14,6 @@
 #include <vector>
 
 using namespace std;
-#define endl '\n'
 
 void setIO(string name = "") {
     ios_base::sync_with_stdio(0);
@@ -23,84 +24,118 @@ void setIO(string name = "") {
         freopen((name + ".out").c_str(), "w", stdout);
     }
 }
+
+// Types
+typedef long long ll;
+typedef pair<int, int> pii;
+typedef vector<int> vi;
+typedef string str;
+
+typedef pair<int, int> pi;
+typedef pair<ll, ll> pll;
+typedef vector<int> vi;
+typedef vector<ll> vll;
+
+// Vectors
+#define sz(x) int((x).size())
+#define all(x) begin(x), end(x)
+#define sortVec(x) sort(all(x))
+#define pb push_back
+
+// Loops
+#define FOR(i, a, b) for (int i = (a); i < (b); ++i)
+#define F0R(i, a) FOR(i, 0, a)
+#define ROF(i, a, b) for (int i = (b)-1; i >= (a); --i)
+#define R0F(i, a) ROF(i, 0, a)
+#define foreach(a, x) for (auto &a : x)
+
 // }}}
 
 // Problem Statement {{{
 
-// 3 printers
-// Printing a d takes 10^6 units in total of CMYK
-// Given an ink in each printer, output any CMYK that can be printed by all 3
+// Input integer N
+// Output N integers
+// Input N integers
+// Output some subset of integers from the I/O that halves the total
 
 // }}}
 
-int T;
-int N;
+// Inputs integer, exit if x == -1 (Error)
+int inp() {
+    int x;
+    cin >> x;
+    if (x == -1)
+        exit(0);
+    return x;
+}
 
-bool subsetSum(int nums[], int n, int left_sum[], int A[]) {
-
-    if (n < 0) {
-        return false;
+// Prints vector
+void printVec(const vector<ll> &v) {
+    for (int i = 0; i < v.size(); i++) {
+        cout << v[i];
+        if (i + 1 < v.size())
+            cout << ' ';
     }
-
-    if (left_sum[0] == 0 && left_sum[1] == 0) {
-        return true;
-    }
-
-    bool result = false;
-
-    for (int i = 0; i < 2; i++) {
-        if (!result && (left_sum[i] - nums[n]) >= 0) {
-            A[n] = i + 1;
-            left_sum[i] = left_sum[i] - nums[n];
-            result = subsetSum(nums, n - 1, left_sum, A);
-            left_sum[i] = left_sum[i] + nums[n];
-        }
-    }
-
-    return result;
+    cout << endl;
 }
 
 void solve() {
 
-    cin >> N;
-    int nums[2 * N];
+    int N = inp();
+    assert(N == 100);
 
-    for (int i = 0; i < N; ++i) {
-        nums[i] = i + 1;
-        cout << i + 1 << " ";
-    }
-    for (int i = N; i < 2 * N; ++i) {
-        cin >> nums[i];
-    }
-
-    cout << endl;
-
-    int sum = accumulate(nums, nums + 2 * N, 0);
-
-    int A[2 * N];
-    int left_sum[2];
-
-    for (int i = 0; i < 2; i++) {
-        left_sum[i] = sum / 2;
-    }
-
-    subsetSum(nums, 2 * N - 1, left_sum, A);
-
-    for (int i = 0; i < 2 * N; i++) {
-        if (A[i] == 1) {
-            cout << nums[i] << " ";
+    vll nums;
+    F0R(i, N) {
+        if (i < 30) {
+            nums.pb(1LL << i); // 1, 2, 4, ... to 2^29 or 2^N
+        } else {
+            nums.pb(1000000000 - i);
         }
     }
 
-    cout << endl;
-}
+    printVec(nums);
 
-int main() {
+    // Input new numbers
+    F0R(i, N)
+    nums.pb(inp());
 
-    setIO("test");
-    cin >> T;
-    for (int t = 0; t < T; ++t) {
-        solve();
+    sort(nums.begin() + 30, nums.end());
+
+    ll total = 0;
+    foreach (x, nums)
+        total += x;
+
+    assert(total % 2 == 0);
+    total /= 2;
+
+    vll ans;
+
+    R0F(i, sz(nums)) {
+        if (total >= nums[i]) {
+            total -= nums[i];
+            ans.pb(nums[i]);
+        } else {
+            break;
+        }
     }
 
+    F0R(i, 30) {
+        if (total & (1LL << i))
+            ans.pb(1LL << i);
+    }
+
+    printVec(ans);
+}
+
+int T;
+
+int main() {
+    setIO("test");
+
+    cin >> T;
+    while (T--)
+        solve();
+
+    cout.flush();
+    return 0;
 }
