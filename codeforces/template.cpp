@@ -51,9 +51,7 @@ typedef vector<ll> vll;
 
 // }}}
 
-// Problem Statement {{{
 // Link:
-// }}}
 
 void solve() {
     int num;
