@@ -16,12 +16,12 @@ monkeys = [
     for monkey in inp
 ]
 
-worry_cap = math.lcm(*[monkey["test"] for monkey in monkeys])
+worry_cap = math.lcm(*(monkey["test"] for monkey in monkeys))
 
 for _ in range(10000):
     for monkey in monkeys:
+        monkey["inspections"] += len(monkey["items"])
         while monkey["items"]:
-            monkey["inspections"] += 1
             item = monkey["items"].pop(0)
             # item = eval(monkey["rule"].replace("old", str(item))) // 3
             item = eval(monkey["rule"].replace("old", str(item))) % worry_cap
