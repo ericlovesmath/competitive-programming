@@ -38,9 +38,9 @@ print(pressure)
 # I give up for now
 
 @lru_cache(maxsize=None)
-def sim_2(human, elephant, time, open):
+def sim_human(human, time, open):
     if time <= 0:
-        return 0
+        return simulate("AA", 26, open)
 
     P = 0
 
@@ -49,19 +49,11 @@ def sim_2(human, elephant, time, open):
         new_open = tuple(sorted(open + (human,)))
 
         for target in tunnel[human]:
-            P = max(sim_2(target, elephant, time - 1, open), P)
+            P = max(sim_human(target, time - 1, open), P)
             if flow[human] != 0:
-                P = max(new_flow + sim_2(target, elephant, time - 2, new_open), P)
-    if elephant not in open:
-        new_flow = flow[elephant] * (time - 1)
-        new_open = tuple(sorted(open + (elephant,)))
-
-        for target in tunnel[elephant]:
-            P = max(sim_2(human, target, time - 1, open), P)
-            if flow[elephant] != 0:
-                P = max(new_flow + sim_2(human, target, time - 2, new_open), P)
+                P = max(new_flow + sim_human(target, time - 2, new_open), P)
 
     return P
 
-pressure = sim_2("AA", "AA", 26, ())
+pressure = sim_human("AA", 26, ())
 print(pressure)
