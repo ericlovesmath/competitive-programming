@@ -1,5 +1,5 @@
 import re
-from functools import lru_cache
+from functools import cache
 
 with open("day16.in") as f:
     tunnel = {}
@@ -10,9 +10,11 @@ with open("day16.in") as f:
         flow[valve] = int(rate)
 
 
-@lru_cache(maxsize=None)
-def simulate(curr, time, open):
+@cache
+def simulate(curr, time, open, again):
     if time <= 0:
+        if again:
+            return simulate("AA", 26, open, False)
         return 0
 
     P = 0
@@ -22,38 +24,14 @@ def simulate(curr, time, open):
         new_open = tuple(sorted(open + (curr,)))  # Tuple so that I can cache
 
         for target in tunnel[curr]:
-            P = max(simulate(target, time - 1, open), P)
+            P = max(simulate(target, time - 1, open, again), P)
             if flow[curr] != 0:
-                P = max(new_flow + simulate(target, time - 2, new_open), P)
+                P = max(
+                    new_flow + simulate(target, time - 2, new_open, again), P
+                )
 
     return P
 
 
-pressure = simulate("AA", 30, ())
-print(pressure)
-
-# Construct directed graph between weights
-# Distance represents time to take
-# 0 chance this bad caching solution will work for part 2
-# I give up for now
-
-@lru_cache(maxsize=None)
-def sim_human(human, time, open):
-    if time <= 0:
-        return simulate("AA", 26, open)
-
-    P = 0
-
-    if human not in open:
-        new_flow = flow[human] * (time - 1)
-        new_open = tuple(sorted(open + (human,)))
-
-        for target in tunnel[human]:
-            P = max(sim_human(target, time - 1, open), P)
-            if flow[human] != 0:
-                P = max(new_flow + sim_human(target, time - 2, new_open), P)
-
-    return P
-
-pressure = sim_human("AA", 26, ())
-print(pressure)
+print(simulate("AA", 30, (), False))
+print(simulate("AA", 26, (), True))
