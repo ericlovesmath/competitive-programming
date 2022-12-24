@@ -30,8 +30,8 @@ for x in range(HEIGHT):
             if board[x][y] == " ":
                 right = y - 1
                 break
-    portal[(x, right + 1)] = (x, left)
-    portal[(x, left - 1)] = (x, right)
+    portal[(x, right, 0)] = (x, left, 0)
+    portal[(x, left, 2)] = (x, right, 2)
 
 for y in range(WIDTH):
     in_walls = False
@@ -45,8 +45,8 @@ for y in range(WIDTH):
             if board[x][y] == " ":
                 down = x - 1
                 break
-    portal[(down + 1, y)] = (up, y)
-    portal[(up - 1, y)] = (down, y)
+    portal[(down, y, 1)] = (up, y, 1)
+    portal[(up, y, 3)] = (down, y, 3)
 
 dirs = [(0, 1), (1, 0), (0, -1), (-1, 0)]
 
@@ -62,11 +62,16 @@ for move in path:
         dir = (dir + 1) % 4
     else:
         for _ in range(move):
-            next = (pos[0] + dirs[dir][0], pos[1] + dirs[dir][1])
+            next = (pos[0], pos[1], dir)
             if next in portal:
-                next = portal[next]
-            if board[next[0] % HEIGHT][next[1] % WIDTH] == ".":
-                pos = next
+                x, y, new_dir = portal[next]
+                x, y = x + dirs[new_dir][0], y + dirs[new_dir][1]
+            else:
+                x, y = next[0] + dirs[dir][0], next[1] + dirs[dir][1]
+            x, y = x % HEIGHT, y % HEIGHT
+
+            if board[x][y] == ".":
+                pos = (x, y)
             else:
                 break
 
