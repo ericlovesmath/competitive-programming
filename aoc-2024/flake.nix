@@ -15,6 +15,7 @@
         in
         pkgs.mkShell {
           packages = [
+            pkgs.pypy3
             (pkgs.python3.withPackages (pkgs: with pkgs; [
               pandas
               numpy
