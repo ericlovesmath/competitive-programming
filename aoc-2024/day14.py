@@ -1,3 +1,4 @@
+import zlib
 import re
 
 with open("day14.in") as f:
@@ -20,12 +21,32 @@ for [px, py, vx, vy] in inp:
 
 print(a * b * c * d)
 
-for i in range(1000000):
+best = ""
+res = None
+min_entropy = 1000000
+
+for steps in range(10000):
     seen = set()
     for [px, py, vx, vy] in inp:
-        x = (px + i * vx) % 101
-        y = (py + i * vy) % 103
+        x = (px + steps * vx) % 101
+        y = (py + steps * vy) % 103
         seen.add((x, y))
-    if len(seen) == len(inp):
-        print(i)
-        break
+
+    s = ""
+    for i in range(103):
+        for j in range(101):
+            if (i, j) in seen:
+                s += "O"
+            else:
+                s += "."
+        s += "\n"
+
+    entropy = len(zlib.compress(s.encode()))
+
+    if entropy < min_entropy:
+        best = s
+        res = steps
+        min_entropy = entropy
+
+print(best)
+print(res)
