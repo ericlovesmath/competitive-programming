@@ -19,6 +19,7 @@
             (pkgs.python3.withPackages (pkgs: with pkgs; [
               pandas
               numpy
+              networkx
             ]))
           ];
         };
