@@ -20,6 +20,7 @@
               pandas
               numpy
               networkx
+              z3
             ]))
           ];
         };
