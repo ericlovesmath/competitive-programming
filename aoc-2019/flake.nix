@@ -1,5 +1,5 @@
 {
-  description = "ziglings";
+  description = "Advent of Code Zig";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
