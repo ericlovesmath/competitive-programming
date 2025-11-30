@@ -1,0 +1,22 @@
+{
+  description = "Advent of Code 2020";
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+  };
+  outputs =
+    { nixpkgs, ... }:
+    let
+      system = "x86_64-linux";
+    in
+    {
+      devShells.${system}.default =
+        let
+          pkgs = import nixpkgs-unstable { inherit system; };
+        in
+        pkgs.mkShell {
+          packages = with pkgs; [
+            leiningen clojure
+          ];
+        };
+    };
+}
