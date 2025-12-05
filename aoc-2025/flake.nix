@@ -13,12 +13,13 @@
       devShells.${system}.default =
         pkgs.mkShell {
           packages = [
+            pkgs.uiua
             pkgs.pypy3
             (pkgs.python3.withPackages (pkgs: with pkgs; [
               pandas
               numpy
               networkx
-              z3
+              z3-solver
             ]))
           ];
         };
