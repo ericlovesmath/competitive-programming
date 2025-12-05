@@ -11,7 +11,7 @@
     {
       devShells.${system}.default =
         let
-          pkgs = import nixpkgs-unstable { inherit system; };
+          pkgs = import nixpkgs { inherit system; };
         in
         pkgs.mkShell {
           packages = with pkgs; [
