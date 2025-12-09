@@ -20,6 +20,7 @@
               numpy
               networkx
               z3-solver
+              shapely
             ]))
           ];
         };
